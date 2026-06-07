@@ -1,67 +1,86 @@
-# Job Portal API
+# 🧑‍💻 Job Portal API
 
-A RESTful Job Portal API built with ASP.NET Core Web API, Entity Framework Core, SQL Server, and JWT Authentication.
+A RESTful Job Portal API built using **ASP.NET Core Web API**, **Entity Framework Core**, and **JWT Authentication** with **Role-Based Authorization (Employer / Employee)**.
 
-## Features
+---
 
-- User Registration
-- User Login
-- Password Hashing
-- JWT Authentication
+## 🚀 Features
+
+- User Registration (Employer / Employee)
+- User Login with JWT Authentication
+- Password Hashing (Secure storage)
 - Role-Based Authorization
-  - Employer
-  - Employee
-- Create Job Posts
-- View Job Posts
-- Secure API Endpoints
+  - Employer → Create & manage job posts
+  - Employee → View and apply for jobs
+- Secure API endpoints using JWT
+- Clean layered architecture (Controllers, Services, Repositories)
+- Entity Framework Core with SQL Server
 
-## Technologies Used
+---
 
-- ASP.NET Core 8 Web API
+## 🛠️ Technologies Used
+
+- ASP.NET Core Web API (.NET 8)
 - Entity Framework Core
 - SQL Server
-- JWT Authentication
-- BCrypt Password Hashing
-- Swagger/OpenAPI
+- JWT (JSON Web Token)
+- C#
+- Swagger (API Testing)
+- BCrypt / Password Hashing
 
-## Project Structure
+---
+
+## 📁 Project Structure
 
 ```
-Controllers/
-Models/
-DTOs/
-Data/
-Services/
-Program.cs
+Controllers/      → API endpoints (Auth, Jobs)
+Services/         → Business logic
+Repositories/     → Data access layer
+Models/           → Database entities
+DTOs/             → Request/Response models
+Data/             → DbContext
+Migrations/       → EF Core migrations
+Program.cs        → Application setup
 ```
 
-## Authentication Flow
+---
 
-1. User registers with a role (Employer or Employee)
-2. Password is hashed before saving
-3. User logs in
-4. JWT token is generated
-5. Client sends token in Authorization header
-6. API validates token and authorizes requests
+## 🔐 Authentication Flow
 
-## API Endpoints
+1. User registers with role (Employer / Employee)
+2. Password is hashed before saving to database
+3. User logs in with email/password
+4. Server validates credentials
+5. JWT token is generated
+6. Client stores token
+7. Token is sent in every request
+8. Backend validates token and role
 
-### Authentication
+---
 
-| Method | Endpoint |
-|----------|----------|
-| POST | /api/auth/register |
-| POST | /api/auth/login |
+## 📡 API Endpoints
 
-### Jobs
+### 🔐 Authentication
 
-| Method | Endpoint |
-|----------|----------|
-| GET | /api/jobs |
-| POST | /api/jobs |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login and get JWT token |
 
-## Sample Register Request
+---
 
+### 💼 Jobs
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/jobs` | Get all jobs |
+| POST | `/api/jobs` | Create job (Employer only) |
+
+---
+
+## 🧪 Sample Requests
+
+### Register User
 ```json
 {
   "username": "john",
@@ -71,8 +90,9 @@ Program.cs
 }
 ```
 
-## Sample Login Request
+---
 
+### Login User
 ```json
 {
   "email": "john@example.com",
@@ -80,36 +100,60 @@ Program.cs
 }
 ```
 
-## Running the Project
+---
 
-1. Clone the repository
+## 🔑 JWT Authorization Header
 
-```bash
-git clone https://github.com/yourusername/JobPortalAPI.git
+```
+Authorization: Bearer YOUR_JWT_TOKEN
 ```
 
-2. Update connection string in appsettings.json
+---
 
-3. Run migrations
+## ⚙️ Setup & Run Project
 
+### 1. Clone Repository
+```bash
+git clone https://github.com/your-username/JobPortalAPI.git
+```
+
+### 2. Update Database Connection
+Edit `appsettings.json`
+
+### 3. Run Migrations
 ```bash
 dotnet ef database update
 ```
 
-4. Run project
-
+### 4. Run Project
 ```bash
 dotnet run
 ```
 
-## Future Improvements
+---
 
-- Job Applications
-- Resume Upload
+## 📌 Future Improvements
+
+- Job Application System
+- Resume Upload Feature
 - Email Notifications
-- Refresh Tokens
+- Refresh Token Implementation
 - Pagination & Filtering
+- Admin Dashboard
 
-## Author
+---
 
-Imalsha Ridmani
+## 👨‍💻 Author
+
+**Imalsha Ridmani**
+
+---
+
+## ⭐ Project Goal
+
+This project demonstrates:
+- JWT Authentication
+- Role-based Authorization
+- Clean architecture in ASP.NET Core
+- Real-world backend API design
+```
