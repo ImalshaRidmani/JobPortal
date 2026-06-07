@@ -3,6 +3,7 @@ using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JobPortalAPI.Controllers
 {
@@ -56,6 +57,37 @@ namespace JobPortalAPI.Controllers
         {
             var jobs = _context.Jobs.ToList();
             return Ok(jobs);
+        }
+
+        [HttpPost("apply")]
+        [Authorize]
+        public async Task<IActionResult> ApplyJob(ApplyJobDto request)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            // ❌ prevent duplicate application
+            var alreadyApplied = _context.JobApplications
+                .FirstOrDefault(x => x.JobId == request.JobId && x.UserId == userId);
+
+            if (alreadyApplied != null)
+                return BadRequest("You already applied for this job");
+
+            var application = new JobApplication
+            {
+                JobId = request.JobId,
+                UserId = userId,
+                Status = "Applied"
+            };
+
+            _context.JobApplications.Add(application);
+            await _context.SaveChangesAsync();
+
+            return Ok("Job applied successfully");
         }
     }
 }
