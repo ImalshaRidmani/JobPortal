@@ -4,6 +4,7 @@ using JobPortalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPortalAPI.Controllers
 {
@@ -88,6 +89,37 @@ namespace JobPortalAPI.Controllers
             await _context.SaveChangesAsync();
 
             return Ok("Job applied successfully");
+        }
+
+        [HttpGet("my-applicants")]
+        [Authorize]
+        public IActionResult GetMyApplicants()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            if (role != "Employer")
+                return Forbid("Only Employers can view applicants");
+
+            int employerId = int.Parse(userIdClaim);
+
+            var result = (from app in _context.JobApplications
+                          join job in _context.Jobs on app.JobId equals job.Id
+                          join user in _context.Users on app.UserId equals user.Id
+                          where job.EmployerId == employerId
+                          select new JobApplicationViewDto
+                          {
+                              ApplicationId = app.Id,
+                              JobTitle = job.Title,
+                              ApplicantEmail = user.email,
+                              Status = app.Status,
+                              AppliedDate = app.AppliedDate
+                          }).ToList();
+
+            return Ok(result);
         }
     }
 }
