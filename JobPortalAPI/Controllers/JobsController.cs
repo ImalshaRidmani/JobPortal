@@ -3,6 +3,8 @@ using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPortalAPI.Controllers
 {
@@ -56,6 +58,68 @@ namespace JobPortalAPI.Controllers
         {
             var jobs = _context.Jobs.ToList();
             return Ok(jobs);
+        }
+
+        [HttpPost("apply")]
+        [Authorize]
+        public async Task<IActionResult> ApplyJob(ApplyJobDto request)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            // ❌ prevent duplicate application
+            var alreadyApplied = _context.JobApplications
+                .FirstOrDefault(x => x.JobId == request.JobId && x.UserId == userId);
+
+            if (alreadyApplied != null)
+                return BadRequest("You already applied for this job");
+
+            var application = new JobApplication
+            {
+                JobId = request.JobId,
+                UserId = userId,
+                Status = "Applied"
+            };
+
+            _context.JobApplications.Add(application);
+            await _context.SaveChangesAsync();
+
+            return Ok("Job applied successfully");
+        }
+
+        [HttpGet("my-applicants")]
+        [Authorize]
+        public IActionResult GetMyApplicants()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            if (role != "Employer")
+                return StatusCode(403, "Only Employers can view applicants");
+
+            int employerId = int.Parse(userIdClaim);
+
+            var result = (from app in _context.JobApplications
+                          join job in _context.Jobs on app.JobId equals job.Id
+                          join user in _context.Users on app.UserId equals user.Id
+                          where job.EmployerId == employerId
+                          select new JobApplicationViewDto
+                          {
+                              ApplicationId = app.Id,
+                              JobTitle = job.Title,
+                              ApplicantEmail = user.email,
+                              Status = app.Status,
+                              AppliedDate = app.AppliedDate
+                          }).ToList();
+
+            return Ok(result);
         }
     }
 }
