@@ -1,17 +1,17 @@
 # 🧑‍💻 Job Portal API
 
-A RESTful Job Portal API built using **ASP.NET Core Web API**, **Entity Framework Core**, and **JWT Authentication** with **Role-Based Authorization (Employer / Employee)**.
+A RESTful Job Portal API built using **ASP.NET Core Web API**, **Entity Framework Core**, and **JWT Authentication** with **Role-Based Authorization (Employer / Job Seeker)**.
 
 ---
 
 ## 🚀 Features
 
-- User Registration (Employer / Employee)
+- User Registration (Employer / Job Seeker)
 - User Login with JWT Authentication
 - Password Hashing (Secure storage)
 - Role-Based Authorization
   - Employer → Create & manage job posts
-  - Employee → View and apply for jobs
+  - Job Seeker → View and apply for jobs
 - Secure API endpoints using JWT
 - Clean layered architecture (Controllers, Services, Repositories)
 - Entity Framework Core with SQL Server
@@ -47,7 +47,7 @@ Program.cs        → Application setup
 
 ## 🔐 Authentication Flow
 
-1. User registers with role (Employer / Employee)
+1. User registers with role (Employer / Job Seeker)
 2. Password is hashed before saving to database
 3. User logs in with email/password
 4. Server validates credentials
