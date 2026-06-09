@@ -102,7 +102,7 @@ namespace JobPortalAPI.Controllers
                 return Unauthorized();
 
             if (role != "Employer")
-                return Forbid("Only Employers can view applicants");
+                return StatusCode(403, "Only Employers can view applicants");
 
             int employerId = int.Parse(userIdClaim);
 
