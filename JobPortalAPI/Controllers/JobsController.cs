@@ -121,39 +121,5 @@ namespace JobPortalAPI.Controllers
 
             return Ok(result);
         }
-
-        //[HttpPut("applications/{id}/accept")]
-        //[Authorize]
-        //public async Task<IActionResult>
-        //    AcceptApplication(int id)
-        //{
-        //    var application = await _context.JobApplications.FindAsync(id);
-
-        //    if (application == null)
-        //        return NotFound("Application not found");
-
-        //    application.Status = "Accepted";
-
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok("Application Accepted");
-        //}
-
-        //[HttpPut("applications/{id}/reject")]
-        //[Authorize]
-        //public async Task<IActionResult>
-        //   RejectApplication(int id)
-        //{
-        //    var application = await _context.JobApplications.FindAsync(id);
-
-        //    if (application == null)
-        //        return NotFound("Application not found");
-
-        //    application.Status = "Rejected";
-
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok("Application Rejected");
-        //}
     }
 }
