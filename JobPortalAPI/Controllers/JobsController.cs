@@ -121,5 +121,64 @@ namespace JobPortalAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpPut("applications/{id}/accept")]
+        [Authorize]
+        public async Task<IActionResult> AcceptApplication(int id)
+        {
+            var application = await _context.JobApplications.FindAsync(id);
+
+            if (application == null)
+                return NotFound("Application not found");
+
+            application.Status = "Accepted";
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Application accepted");
+        }
+
+        [HttpPut("applications/{id}/reject")]
+        [Authorize]
+        public async Task<IActionResult> RejectApplication(int id)
+        {
+            var application = await _context.JobApplications.FindAsync(id);
+
+            if (application == null)
+                return NotFound("Application not found");
+
+            application.Status = "Rejected";
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Application rejected");
+        }
+
+        [HttpGet("my-applications")]
+        [Authorize]
+        public IActionResult GetMyApplications()
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            var applications = (from app in _context.JobApplications
+                                join job in _context.Jobs
+                                on app.JobId equals job.Id
+                                where app.UserId == userId
+                                select new
+                                {
+                                    app.Id,
+                                    JobTitle = job.Title,
+                                    job.Location,
+                                    app.Status,
+                                    app.AppliedDate
+                                }).ToList();
+
+            return Ok(applications);
+        }
     }
 }
