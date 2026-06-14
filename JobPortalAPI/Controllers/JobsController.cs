@@ -52,12 +52,24 @@ namespace JobPortalAPI.Controllers
 
             return Ok(job);
         }
-
         [HttpGet]
-        public IActionResult GetJobs()
+        public IActionResult GetJobs(string? keyword, string? location)
         {
-            var jobs = _context.Jobs.ToList();
-            return Ok(jobs);
+            var jobs = _context.Jobs.AsQueryable();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                jobs = jobs.Where(j =>
+                    j.Title.Contains(keyword));
+            }
+
+            if (!string.IsNullOrEmpty(location))
+            {
+                jobs = jobs.Where(j =>
+                    j.Location.Contains(location));
+            }
+
+            return Ok(jobs.ToList());
         }
 
         [HttpPost("apply")]
