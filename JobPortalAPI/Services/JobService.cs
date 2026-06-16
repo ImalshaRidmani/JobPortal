@@ -1,20 +1,24 @@
 ﻿using JobPortalAPI.Data;
 using JobPortalAPI.Models;
+using JobPortalAPI.Repositories;
 
 namespace JobPortalAPI.Services
 {
     public class JobService : IJobService
     {
-        private readonly AppDbContext _context;
+        private readonly IJobRepository _jobRepository;
+        //private readonly AppDbContext _context;
 
-        public JobService(AppDbContext context)
+        public JobService(IJobRepository jobRepository)
         {
-            _context = context;
+            //_context = context;
+            _jobRepository = jobRepository;
         }
 
         public List<Job> GetAllJobs()
         {
-            return _context.Jobs.ToList();
+            //return _context.Jobs.ToList();
+            return _jobRepository.GetAllJobs();
         }
     }
 }
