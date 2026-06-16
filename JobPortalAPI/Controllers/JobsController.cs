@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using JobPortalAPI.Services;
 
 namespace JobPortalAPI.Controllers
 {
@@ -13,10 +14,12 @@ namespace JobPortalAPI.Controllers
     public class JobsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IJobService _jobService;
 
-        public JobsController(AppDbContext context)
+        public JobsController(AppDbContext context, IJobService jobService)
         {
             _context = context;
+            _jobService = jobService;
         }
 
         // CREATE JOB
@@ -53,23 +56,11 @@ namespace JobPortalAPI.Controllers
             return Ok(job);
         }
         [HttpGet]
-        public IActionResult GetJobs(string? keyword, string? location)
+        public IActionResult GetJobs()
         {
-            var jobs = _context.Jobs.AsQueryable();
+            var jobs = _jobService.GetAllJobs();
 
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                jobs = jobs.Where(j =>
-                    j.Title.Contains(keyword));
-            }
-
-            if (!string.IsNullOrEmpty(location))
-            {
-                jobs = jobs.Where(j =>
-                    j.Location.Contains(location));
-            }
-
-            return Ok(jobs.ToList());
+            return Ok(jobs);
         }
 
         [HttpPost("apply")]
