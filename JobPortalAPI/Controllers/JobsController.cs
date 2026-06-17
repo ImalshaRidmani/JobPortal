@@ -98,32 +98,24 @@ namespace JobPortalAPI.Controllers
         [Authorize]
         public async Task<IActionResult> AcceptApplication(int id)
         {
-            var application = await _context.JobApplications.FindAsync(id);
+            var result = await _jobService.AcceptApplication(id);
 
-            if (application == null)
-                return NotFound("Application not found");
+            if (result == "Application not found")
+                return NotFound(result);
 
-            application.Status = "Accepted";
-
-            await _context.SaveChangesAsync();
-
-            return Ok("Application accepted");
+            return Ok(result);
         }
 
         [HttpPut("applications/{id}/reject")]
         [Authorize]
         public async Task<IActionResult> RejectApplication(int id)
         {
-            var application = await _context.JobApplications.FindAsync(id);
+            var result = await _jobService.RejectApplication(id);
 
-            if (application == null)
-                return NotFound("Application not found");
+            if (result == "Application not found")
+                return NotFound(result);
 
-            application.Status = "Rejected";
-
-            await _context.SaveChangesAsync();
-
-            return Ok("Application rejected");
+            return Ok(result);
         }
 
         [HttpGet("my-applications")]

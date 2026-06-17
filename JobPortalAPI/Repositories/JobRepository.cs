@@ -54,5 +54,11 @@ namespace JobPortalAPI.Repositories
                         AppliedDate = app.AppliedDate,
                     }).ToList();
         }
+
+        public JobApplication? GetApplicationById(int id)
+        {
+            return _context.JobApplications
+                .FirstOrDefault(x => x.Id == id);
+        }
     }
 }

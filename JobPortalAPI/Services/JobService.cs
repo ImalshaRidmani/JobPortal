@@ -68,5 +68,35 @@ namespace JobPortalAPI.Services
         {
             return _jobRepository.GetApplicationForEmployer(employerId);
         }
+
+        public async Task<string> AcceptApplication(int applicationId)
+        {
+            var application =
+                _jobRepository.GetApplicationById(applicationId);
+
+            if (application == null)
+                return "Application not found";
+
+            application.Status = "Accepted";
+
+            await _jobRepository.SaveChangesAsync();
+
+            return "Application accepted";
+        }
+
+        public async Task<string> RejectApplication(int applicationId)
+        {
+            var application =
+                _jobRepository.GetApplicationById(applicationId);
+
+            if (application == null)
+                return "Application not found";
+
+            application.Status = "Rejected";
+
+            await _jobRepository.SaveChangesAsync();
+
+            return "Application rejected";
+        }
     }
 }

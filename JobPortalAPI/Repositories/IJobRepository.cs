@@ -13,6 +13,8 @@ namespace JobPortalAPI.Repositories
 
         void AddJob(Job job);
 
+        JobApplication? GetApplicationById(int id);
+
         Task SaveChangesAsync();
 
         List<JobApplicationViewDto> GetApplicationForEmployer(int employerId);
