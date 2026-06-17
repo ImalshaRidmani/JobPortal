@@ -1,4 +1,5 @@
 ﻿using JobPortalAPI.Data;
+using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 
 namespace JobPortalAPI.Repositories
@@ -36,6 +37,22 @@ namespace JobPortalAPI.Repositories
         public void AddJob(Job job)
         {
             _context.Jobs.Add(job);
+        }
+
+        public List<JobApplicationViewDto> GetApplicationForEmployer(int employerId)
+        {
+            return (from app in _context.JobApplications
+                    join job in _context.Jobs on app.JobId equals job.Id
+                    join user in _context.Users on app.UserId equals user.Id
+                    where job.EmployerId == employerId
+                    select new JobApplicationViewDto
+                    {
+                        ApplicationId = app.Id,
+                        JobTitle = job.Title,
+                        ApplicantEmail = user.email,
+                        Status = app.Status,
+                        AppliedDate = app.AppliedDate,
+                    }).ToList();
         }
     }
 }

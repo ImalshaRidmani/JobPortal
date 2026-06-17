@@ -63,5 +63,10 @@ namespace JobPortalAPI.Services
 
             return job;
         }
+
+        public List<JobApplicationViewDto> GetMyApplications(int employerId)
+        {
+            return _jobRepository.GetApplicationForEmployer(employerId);
+        }
     }
 }

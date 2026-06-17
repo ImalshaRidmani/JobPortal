@@ -89,20 +89,9 @@ namespace JobPortalAPI.Controllers
 
             int employerId = int.Parse(userIdClaim);
 
-            var result = (from app in _context.JobApplications
-                          join job in _context.Jobs on app.JobId equals job.Id
-                          join user in _context.Users on app.UserId equals user.Id
-                          where job.EmployerId == employerId
-                          select new JobApplicationViewDto
-                          {
-                              ApplicationId = app.Id,
-                              JobTitle = job.Title,
-                              ApplicantEmail = user.email,
-                              Status = app.Status,
-                              AppliedDate = app.AppliedDate
-                          }).ToList();
+            var applications = _jobService.GetMyApplications(employerId);
 
-            return Ok(result);
+            return Ok(applications);
         }
 
         [HttpPut("applications/{id}/accept")]
