@@ -32,5 +32,10 @@ namespace JobPortalAPI.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public void AddJob(Job job)
+        {
+            _context.Jobs.Add(job);
+        }
     }
 }

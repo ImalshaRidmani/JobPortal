@@ -1,4 +1,5 @@
 ﻿using JobPortalAPI.Data;
+using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 using JobPortalAPI.Repositories;
 
@@ -43,6 +44,24 @@ namespace JobPortalAPI.Services
             await _jobRepository.SaveChangesAsync();
 
             return "Job applied successfully";
+        }
+
+        public async Task<Job> CreateJob(JobDto request, int employerId)
+        {
+            var job = new Job
+            {
+                Title = request.Title,
+                Description = request.Description,
+                Location = request.Location,
+                Salary = request.Salary,
+                EmployerId = employerId
+            };
+
+            _jobRepository.AddJob(job);
+
+            await _jobRepository.SaveChangesAsync();
+
+            return job;
         }
     }
 }

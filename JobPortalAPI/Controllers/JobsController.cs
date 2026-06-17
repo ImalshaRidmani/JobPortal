@@ -27,31 +27,21 @@ namespace JobPortalAPI.Controllers
         [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> CreateJob(JobDto request)
         {
-            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var roleClaim = User.FindFirst(ClaimTypes.Role)?.Value;
+            var userIdClaim = User.FindFirst(
+                System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            var role = User.FindFirst(
+                System.Security.Claims.ClaimTypes.Role)?.Value;
 
             if (userIdClaim == null)
-            {
-                return Unauthorized("Invalid token");
-            }
+                return Unauthorized();
 
-            // 🔐 ROLE CHECK HERE
-            if (roleClaim != "Employer")
+            if (role != "Employer")
                 return StatusCode(403, "Only Employers can create jobs");
 
             int employerId = int.Parse(userIdClaim);
 
-            var job = new Job
-            {
-                Title = request.Title,
-                Description = request.Description,
-                Location = request.Location,
-                Salary = request.Salary,
-                EmployerId = employerId // temporary (we fix with JWT later)
-            };
-
-            _context.Jobs.Add(job);
-            await _context.SaveChangesAsync();
+            var job = await _jobService.CreateJob(request, employerId);
 
             return Ok(job);
         }
