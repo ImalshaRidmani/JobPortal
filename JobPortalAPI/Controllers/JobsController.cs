@@ -67,31 +67,21 @@ namespace JobPortalAPI.Controllers
         [Authorize]
         public async Task<IActionResult> ApplyJob(ApplyJobDto request)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim =
+        User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdClaim == null)
                 return Unauthorized();
 
             int userId = int.Parse(userIdClaim);
 
-            // ❌ prevent duplicate application
-            var alreadyApplied = _context.JobApplications
-                .FirstOrDefault(x => x.JobId == request.JobId && x.UserId == userId);
+            var result =
+                await _jobService.ApplyJob(request.JobId, userId);
 
-            if (alreadyApplied != null)
-                return BadRequest("You already applied for this job");
+            if (result == "You already applied for this job")
+                return BadRequest(result);
 
-            var application = new JobApplication
-            {
-                JobId = request.JobId,
-                UserId = userId,
-                Status = "Applied"
-            };
-
-            _context.JobApplications.Add(application);
-            await _context.SaveChangesAsync();
-
-            return Ok("Job applied successfully");
+            return Ok(result);
         }
 
         [HttpGet("my-applicants")]

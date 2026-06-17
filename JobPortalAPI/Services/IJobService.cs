@@ -5,5 +5,7 @@ namespace JobPortalAPI.Services
     public interface IJobService
     {
         List<Job> GetAllJobs();
+
+        Task<string> ApplyJob(int jobId, int userId);
     }
 }

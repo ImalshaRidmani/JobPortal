@@ -5,5 +5,11 @@ namespace JobPortalAPI.Repositories
     public interface IJobRepository
     {
         List<Job> GetAllJobs();
+
+        JobApplication? GetApplication(int jobId, int userId);
+
+        void AddApplication(JobApplication application);
+
+        Task SaveChangesAsync();
     }
 }

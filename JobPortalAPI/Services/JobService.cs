@@ -20,5 +20,29 @@ namespace JobPortalAPI.Services
             //return _context.Jobs.ToList();
             return _jobRepository.GetAllJobs();
         }
+
+        public async Task<string> ApplyJob(int jobId, int userId)
+        {
+            var alreadyApplied =
+                _jobRepository.GetApplication(jobId, userId);
+
+            if (alreadyApplied != null)
+            {
+                return "You already applied for this job";
+            }
+
+            var application = new JobApplication
+            {
+                JobId = jobId,
+                UserId = userId,
+                Status = "Applied"
+            };
+
+            _jobRepository.AddApplication(application);
+
+            await _jobRepository.SaveChangesAsync();
+
+            return "Job applied successfully";
+        }
     }
 }
