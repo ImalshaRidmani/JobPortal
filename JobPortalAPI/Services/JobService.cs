@@ -64,7 +64,7 @@ namespace JobPortalAPI.Services
             return job;
         }
 
-        public List<JobApplicationViewDto> GetMyApplications(int employerId)
+        public List<JobApplicationViewDto> GetMyApplicants(int employerId)
         {
             return _jobRepository.GetApplicationForEmployer(employerId);
         }
@@ -97,6 +97,11 @@ namespace JobPortalAPI.Services
             await _jobRepository.SaveChangesAsync();
 
             return "Application rejected";
+        }
+
+        public List<MyApplicationDto> GetMyApplications(int userId)
+        {
+            return _jobRepository.GetApplicationsByUserId(userId);
         }
     }
 }

@@ -11,10 +11,12 @@ namespace JobPortalAPI.Services
 
         Task<Job> CreateJob(JobDto request, int employerId);
 
-        List<JobApplicationViewDto> GetMyApplications(int employerId);
+        List<JobApplicationViewDto> GetMyApplicants(int employerId);
 
         Task<string> AcceptApplication(int applicationId);
 
         Task<string> RejectApplication(int applicationId);
+
+        List<MyApplicationDto> GetMyApplications(int userId);
     }
 }

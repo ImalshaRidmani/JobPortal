@@ -18,5 +18,7 @@ namespace JobPortalAPI.Repositories
         Task SaveChangesAsync();
 
         List<JobApplicationViewDto> GetApplicationForEmployer(int employerId);
+
+        List<MyApplicationDto> GetApplicationsByUserId(int userId);
     }
 }

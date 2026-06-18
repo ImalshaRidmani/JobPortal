@@ -60,5 +60,20 @@ namespace JobPortalAPI.Repositories
             return _context.JobApplications
                 .FirstOrDefault(x => x.Id == id);
         }
+
+        public List<MyApplicationDto> GetApplicationsByUserId(int userId)
+        {
+            return (from app in _context.JobApplications
+                    join job in _context.Jobs on app.JobId equals job.Id
+                    where app.UserId == userId
+                    select new MyApplicationDto
+                    {
+                        ApplicationId = app.Id,
+                        JobTitle = job.Title,
+                        Location = job.Location,
+                        Status = app.Status,
+                        AppliedDate = app.AppliedDate
+                    }).ToList();
+        }
     }
 }

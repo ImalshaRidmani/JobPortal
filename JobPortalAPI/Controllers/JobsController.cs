@@ -89,7 +89,7 @@ namespace JobPortalAPI.Controllers
 
             int employerId = int.Parse(userIdClaim);
 
-            var applications = _jobService.GetMyApplications(employerId);
+            var applications = _jobService.GetMyApplicants(employerId);
 
             return Ok(applications);
         }
@@ -129,18 +129,7 @@ namespace JobPortalAPI.Controllers
 
             int userId = int.Parse(userIdClaim);
 
-            var applications = (from app in _context.JobApplications
-                                join job in _context.Jobs
-                                on app.JobId equals job.Id
-                                where app.UserId == userId
-                                select new
-                                {
-                                    app.Id,
-                                    JobTitle = job.Title,
-                                    job.Location,
-                                    app.Status,
-                                    app.AppliedDate
-                                }).ToList();
+            var applications = _jobService.GetMyApplications(userId);
 
             return Ok(applications);
         }
