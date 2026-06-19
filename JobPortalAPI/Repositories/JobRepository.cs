@@ -88,5 +88,13 @@ namespace JobPortalAPI.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public List<Job> GetSavedJobs(int userId)
+        {
+            return _context.SavedJobs
+                .Where(s => s.UserId == userId)
+                .Select(s => s.Job)
+                .ToList();
+        }
     }
 }

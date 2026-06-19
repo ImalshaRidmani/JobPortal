@@ -124,5 +124,10 @@ namespace JobPortalAPI.Services
 
             return "Job saved successfully";
         }
+
+        public List<Job> GetSavedJobs(int userId)
+        {
+            return _jobRepository.GetSavedJobs(userId);
+        }
     }
 }

@@ -20,5 +20,7 @@ namespace JobPortalAPI.Services
         List<MyApplicationDto> GetMyApplications(int userId);
 
         Task<string> SaveJob(int userId, int jobId);
+
+        List<Job> GetSavedJobs(int userId);
     }
 }

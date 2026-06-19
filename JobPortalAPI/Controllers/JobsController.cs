@@ -154,5 +154,22 @@ namespace JobPortalAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("saved")]
+        [Authorize]
+        public IActionResult GetSavedJobs()
+        {
+            var userIdClaim =
+                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            var savedJobs = _jobService.GetSavedJobs(userId);
+
+            return Ok(savedJobs);
+        }
     }
 }
