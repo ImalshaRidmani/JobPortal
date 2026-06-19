@@ -103,5 +103,26 @@ namespace JobPortalAPI.Services
         {
             return _jobRepository.GetApplicationsByUserId(userId);
         }
+
+        public async Task<string> SaveJob(int userId, int jobId)
+        {
+            var existing =
+                _jobRepository.GetSavedJob(userId, jobId);
+
+            if (existing != null)
+                return "Job already saved";
+
+            var savedJob = new SavedJob
+            {
+                UserId = userId,
+                JobId = jobId
+            };
+
+            _jobRepository.AddSavedJob(savedJob);
+
+            await _jobRepository.SaveChangesAsync();
+
+            return "Job saved successfully";
+        }
     }
 }

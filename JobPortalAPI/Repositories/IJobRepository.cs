@@ -13,12 +13,16 @@ namespace JobPortalAPI.Repositories
 
         void AddJob(Job job);
 
-        JobApplication? GetApplicationById(int id);
-
-        Task SaveChangesAsync();
+        JobApplication? GetApplicationById(int id);  
 
         List<JobApplicationViewDto> GetApplicationForEmployer(int employerId);
 
         List<MyApplicationDto> GetApplicationsByUserId(int userId);
+
+        SavedJob? GetSavedJob(int UserId, int JobId);
+
+        void AddSavedJob(SavedJob savedJob);
+
+        Task SaveChangesAsync();
     }
 }

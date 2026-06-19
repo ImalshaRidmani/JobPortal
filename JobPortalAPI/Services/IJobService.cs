@@ -18,5 +18,7 @@ namespace JobPortalAPI.Services
         Task<string> RejectApplication(int applicationId);
 
         List<MyApplicationDto> GetMyApplications(int userId);
+
+        Task<string> SaveJob(int userId, int jobId);
     }
 }

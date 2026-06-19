@@ -29,11 +29,6 @@ namespace JobPortalAPI.Repositories
             _context.JobApplications.Add(application);
         }
 
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
-
         public void AddJob(Job job)
         {
             _context.Jobs.Add(job);
@@ -74,6 +69,24 @@ namespace JobPortalAPI.Repositories
                         Status = app.Status,
                         AppliedDate = app.AppliedDate
                     }).ToList();
+        }
+
+        public SavedJob? GetSavedJob(int userId, int jobId)
+        {
+            return _context.SavedJobs
+                .FirstOrDefault(x =>
+                    x.UserId == userId &&
+                    x.JobId == jobId);
+        }
+
+        public void AddSavedJob(SavedJob savedJob)
+        {
+            _context.SavedJobs.Add(savedJob);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

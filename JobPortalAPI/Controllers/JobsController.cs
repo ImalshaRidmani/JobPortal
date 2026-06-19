@@ -133,5 +133,26 @@ namespace JobPortalAPI.Controllers
 
             return Ok(applications);
         }
+
+        [HttpPost("save")]
+        [Authorize]
+        public async Task<IActionResult> SaveJob(SaveJobDto request)
+        {
+            var userIdClaim =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            var result =
+                await _jobService.SaveJob(userId, request.JobId);
+
+            if (result == "Job already saved")
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }
