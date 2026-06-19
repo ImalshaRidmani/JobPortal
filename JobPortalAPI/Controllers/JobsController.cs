@@ -171,5 +171,17 @@ namespace JobPortalAPI.Controllers
 
             return Ok(savedJobs);
         }
+
+        [HttpDelete("saved/{id}")]
+        [Authorize]
+        public async Task<IActionResult> RemoveSavedJob(int id)
+        {
+            var result = await _jobService.RemoveSavedJob(id);
+
+            if (result == "Saved job not found")
+                return NotFound(result);
+
+            return Ok(result);
+        }
     }
 }

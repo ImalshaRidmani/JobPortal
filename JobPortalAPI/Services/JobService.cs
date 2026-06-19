@@ -129,5 +129,19 @@ namespace JobPortalAPI.Services
         {
             return _jobRepository.GetSavedJobs(userId);
         }
+
+        public async Task<string> RemoveSavedJob(int id)
+        {
+            var savedJob = _jobRepository.GetSavedJobById(id);
+
+            if (savedJob == null)
+                return "Saved job not found";
+
+            _jobRepository.RemoveSavedJob(savedJob);
+
+            await _jobRepository.SaveChangesAsync();
+
+            return "Saved job removed";
+        }
     }
 }

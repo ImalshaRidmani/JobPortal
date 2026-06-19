@@ -96,5 +96,15 @@ namespace JobPortalAPI.Repositories
                 .Select(s => s.Job)
                 .ToList();
         }
+
+        public SavedJob? GetSavedJobById(int id)
+        {
+            return _context.SavedJobs.FirstOrDefault(x => x.Id == id);
+        }
+
+        public void RemoveSavedJob(SavedJob savedJob)
+        {
+            _context.SavedJobs.Remove(savedJob);
+        }
     }
 }

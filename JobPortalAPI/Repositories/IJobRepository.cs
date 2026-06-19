@@ -26,5 +26,9 @@ namespace JobPortalAPI.Repositories
         Task SaveChangesAsync();
 
         List<Job> GetSavedJobs(int userId);
+
+        SavedJob? GetSavedJobById(int id);
+
+        void RemoveSavedJob(SavedJob savedJob);
     }
 }

@@ -22,5 +22,7 @@ namespace JobPortalAPI.Services
         Task<string> SaveJob(int userId, int jobId);
 
         List<Job> GetSavedJobs(int userId);
+
+        Task<string> RemoveSavedJob(int id);
     }
 }
