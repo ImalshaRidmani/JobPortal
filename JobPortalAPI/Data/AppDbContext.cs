@@ -10,6 +10,7 @@ namespace JobPortalAPI.Data
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<SavedJob> SavedJobs { get; set; }
+        public DbSet<Resume> Resumes { get; set; }
     }
 }
 
