@@ -20,5 +20,15 @@ namespace JobPortalAPI.Repositories
             return _context.Resumes
                 .FirstOrDefault(r => r.UserId == userId);
         }
+
+        public Resume? GetResumeById(int id)
+        {
+            return _context.Resumes.FirstOrDefault(x => x.Id == id);
+        }
+
+        public void RemoveResume(Resume resume)
+        {
+            _context.Resumes.Remove(resume);
+        }
     }
 }

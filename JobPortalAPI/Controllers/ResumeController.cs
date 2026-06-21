@@ -86,5 +86,17 @@ namespace JobPortalAPI.Controllers
 
             return Ok(resume);
         }
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> DeleteResume(int id)
+        {
+            var result = await _resumeService.DeleteResume(id);
+
+            if (result == "Resume not found")
+                return NotFound(result);
+
+            return Ok(result);
+        }
     }
 }

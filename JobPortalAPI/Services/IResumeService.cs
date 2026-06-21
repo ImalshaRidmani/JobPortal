@@ -6,5 +6,9 @@ namespace JobPortalAPI.Services
     public interface IResumeService
     {
         Resume? GetMyResume(int userId);
+
+        Task<string> DeleteResume(int id);
+
+        Task SaveChangesAsync();
     }
 }
