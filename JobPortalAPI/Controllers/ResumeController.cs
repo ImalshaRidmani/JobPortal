@@ -1,6 +1,7 @@
 ﻿using JobPortalAPI.Data;
 using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
+using JobPortalAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +13,13 @@ namespace JobPortalAPI.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IResumeService _resumeService;
 
-        public ResumeController(AppDbContext context, IWebHostEnvironment env)
+        public ResumeController(AppDbContext context, IWebHostEnvironment env, IResumeService resumeService)
         {
             _context = context;
             _env = env;
+            _resumeService = resumeService;
         }
 
         [HttpPost("upload")]
@@ -62,6 +65,26 @@ namespace JobPortalAPI.Controllers
                 message = "Resume uploaded successfully",
                 filePath = resume.FilePath
             });
+        }
+
+        [HttpGet("my")]
+        [Authorize]
+        public IActionResult GetMyResume()
+        {
+            var userIdClaim =
+                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+
+            var resume = _resumeService.GetMyResume(userId);
+
+            if (resume == null)
+                return NotFound("Resume not found");
+
+            return Ok(resume);
         }
     }
 }

@@ -67,6 +67,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IJobService, JobService>();
 
+builder.Services.AddScoped<IResumeRepository, ResumeRepository>();
+builder.Services.AddScoped<IResumeService, ResumeService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
