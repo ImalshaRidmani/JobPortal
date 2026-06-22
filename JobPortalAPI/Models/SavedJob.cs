@@ -8,8 +8,8 @@
 
         public int JobId { get; set; }
 
-        public User User { get; set; } = null;
+        public User User { get; set; }
 
-        public Job Job { get; set; } = null;
+        public Job Job { get; set; }
     }
 }

@@ -17,5 +17,7 @@
         // Who created this job (Employer)
         public int EmployerId { get; set; }
 
+        public int CompanyId { get; set; }
+        public Company Company { get; set; } = null!;
     }
 }
