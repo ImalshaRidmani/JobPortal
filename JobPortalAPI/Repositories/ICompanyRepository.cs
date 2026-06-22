@@ -9,5 +9,7 @@ namespace JobPortalAPI.Repositories
         void AddCompany(Company company);
 
         Task SaveChangesAsync();
+
+        void UpdateCompany(Company company);
     }
 }

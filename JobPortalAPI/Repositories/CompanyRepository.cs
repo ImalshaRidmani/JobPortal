@@ -27,5 +27,10 @@ namespace JobPortalAPI.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public void UpdateCompany(Company company)
+        {
+            _context.Companies.Update(company);
+        }
     }
 }

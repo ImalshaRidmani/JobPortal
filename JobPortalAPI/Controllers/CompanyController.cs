@@ -62,5 +62,29 @@ namespace JobPortalAPI.Controllers
 
             return Ok(company);
         }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateCompany(CompanyDto request)
+        {
+            var userIdClaim =
+                User.FindFirst(
+                    System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int employerId = int.Parse(userIdClaim);
+
+            var result =
+                await _companyService.UpdateCompany(
+                    request,
+                    employerId);
+
+            if (result == "Company not found")
+                return NotFound(result);
+
+            return Ok(result);
+        }
     }
 }

@@ -43,5 +43,27 @@ namespace JobPortalAPI.Services
         {
             return _companyRepository.GetCompanyByEmployerId(employerId);
         }
+
+        public async Task<string> UpdateCompany(
+        CompanyDto request,
+        int employerId)
+        {
+            var company =
+                _companyRepository.GetCompanyByEmployerId(employerId);
+
+            if (company == null)
+                return "Company not found";
+
+            company.Name = request.Name;
+            company.Description = request.Description;
+            company.Location = request.Location;
+            company.Website = request.Website;
+
+            _companyRepository.UpdateCompany(company);
+
+            await _companyRepository.SaveChangesAsync();
+
+            return "Company updated successfully";
+        }
     }
 }

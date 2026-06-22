@@ -9,5 +9,7 @@ namespace JobPortalAPI.Services
         Task<string> CreateCompany(CompanyDto request, int employerId);
 
         Company? GetMyCompany(int employerId);
+
+        Task<string> UpdateCompany(CompanyDto request, int employerId);
     }
 }
