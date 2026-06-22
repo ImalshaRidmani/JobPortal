@@ -7,10 +7,12 @@ namespace JobPortalAPI.Services
     public class CompanyService : ICompanyService
     {
         private readonly ICompanyRepository _companyRepository;
+        private readonly IWebHostEnvironment _env;
 
-        public CompanyService(ICompanyRepository companyRepository)
+        public CompanyService(ICompanyRepository companyRepository, IWebHostEnvironment env)
         {
             _companyRepository = companyRepository;
+            _env = env;
         }
 
         public async Task<string> CreateCompany(
@@ -64,6 +66,48 @@ namespace JobPortalAPI.Services
             await _companyRepository.SaveChangesAsync();
 
             return "Company updated successfully";
+        }
+
+        public async Task<string> UploadLogo(int employerId, IFormFile file)
+        {
+            var company =
+                _companyRepository.GetCompanyByEmployerId(employerId);
+
+            if (company == null)
+                return "Company not found";
+
+            var extension =
+                Path.GetExtension(file.FileName).ToLower();
+
+            if (extension != ".jpg" &&
+                extension != ".jpeg" &&
+                extension != ".png")
+            {
+                return "Only JPG and PNG files allowed";
+            }
+
+            var fileName =
+                Guid.NewGuid() + extension;
+
+            var filePath =
+                Path.Combine(
+                    _env.WebRootPath,
+                    "company-logos",
+                    fileName);
+
+            using var stream =
+                new FileStream(filePath, FileMode.Create);
+
+            await file.CopyToAsync(stream);
+
+            company.LogoPath =
+                "/company-logos/" + fileName;
+
+            _companyRepository.UpdateCompany(company);
+
+            await _companyRepository.SaveChangesAsync();
+
+            return "Logo uploaded successfully";
         }
     }
 }

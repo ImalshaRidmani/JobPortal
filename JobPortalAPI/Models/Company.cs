@@ -12,6 +12,8 @@
 
         public string Website { get; set; } = string.Empty;
 
+        public string? LogoPath { get; set; }
+
         public int EmployerId { get; set; }
 
         public User Employer { get; set; } = null!;

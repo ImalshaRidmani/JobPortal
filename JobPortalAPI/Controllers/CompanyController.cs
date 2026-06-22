@@ -86,5 +86,29 @@ namespace JobPortalAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("logo")]
+        [Authorize]
+        public async Task<IActionResult> UploadLogo([FromForm] UploadCompanyLogoDto request)
+        {
+            var userIdClaim =
+                User.FindFirst(
+                    ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int employerId = int.Parse(userIdClaim);
+
+            var result =
+                await _companyService.UploadLogo(
+                    employerId,
+                    request.File);
+
+            if (result != "Logo uploaded successfully")
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

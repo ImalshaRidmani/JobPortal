@@ -11,5 +11,7 @@ namespace JobPortalAPI.Services
         Company? GetMyCompany(int employerId);
 
         Task<string> UpdateCompany(CompanyDto request, int employerId);
+
+        Task<string> UploadLogo(int employerId, IFormFile file);
     }
 }
