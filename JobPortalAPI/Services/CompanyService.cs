@@ -38,5 +38,10 @@ namespace JobPortalAPI.Services
 
             return "Company created successfully";
         }
+
+        public Company? GetMyCompany(int employerId)
+        {
+            return _companyRepository.GetCompanyByEmployerId(employerId);
+        }
     }
 }

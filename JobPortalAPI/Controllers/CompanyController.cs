@@ -41,5 +41,26 @@ namespace JobPortalAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("my")]
+        [Authorize]
+        public IActionResult GetMyCompany()
+        {
+            var userIdClaim =
+                User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int employerId = int.Parse(userIdClaim);
+
+            var company =
+                _companyService.GetMyCompany(employerId);
+
+            if (company == null)
+                return NotFound("Company not found");
+
+            return Ok(company);
+        }
     }
 }
