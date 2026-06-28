@@ -1,4 +1,4 @@
-﻿using JobPortalAPI.Data;
+using JobPortalAPI.Data;
 using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +42,11 @@ namespace JobPortalAPI.Controllers
             int employerId = int.Parse(userIdClaim);
 
             var job = await _jobService.CreateJob(request, employerId);
+
+            if (job == null)
+            {
+                return BadRequest("Company not found for this employer. Please register a company first.");
+            }
 
             return Ok(job);
         }
