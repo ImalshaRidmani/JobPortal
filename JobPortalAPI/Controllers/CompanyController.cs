@@ -110,5 +110,24 @@ namespace JobPortalAPI.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("jobs")]
+        [Authorize]
+        public IActionResult GetCompanyJobs()
+        {
+            var userIdClaim =
+                User.FindFirst(
+                    System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int employerId = int.Parse(userIdClaim);
+
+            var jobs =
+                _companyService.GetCompanyJobs(employerId);
+
+            return Ok(jobs);
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using JobPortalAPI.DTOs;
+using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 
 namespace JobPortalAPI.Services
@@ -9,7 +9,7 @@ namespace JobPortalAPI.Services
 
         Task<string> ApplyJob(int jobId, int userId);
 
-        Task<Job> CreateJob(JobDto request, int employerId);
+        Task<Job?> CreateJob(JobDto request, int employerId);
 
         List<JobApplicationViewDto> GetMyApplicants(int employerId);
 

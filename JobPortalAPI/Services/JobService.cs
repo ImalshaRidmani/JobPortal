@@ -1,4 +1,4 @@
-﻿using JobPortalAPI.Data;
+using JobPortalAPI.Data;
 using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 using JobPortalAPI.Repositories;
@@ -8,12 +8,12 @@ namespace JobPortalAPI.Services
     public class JobService : IJobService
     {
         private readonly IJobRepository _jobRepository;
-        //private readonly AppDbContext _context;
+        private readonly ICompanyRepository _companyRepository;
 
-        public JobService(IJobRepository jobRepository)
+        public JobService(IJobRepository jobRepository, ICompanyRepository companyRepository)
         {
-            //_context = context;
             _jobRepository = jobRepository;
+            _companyRepository = companyRepository;
         }
 
         public List<Job> GetAllJobs()
@@ -46,15 +46,22 @@ namespace JobPortalAPI.Services
             return "Job applied successfully";
         }
 
-        public async Task<Job> CreateJob(JobDto request, int employerId)
+        public async Task<Job?> CreateJob(JobDto request, int employerId)
         {
+            var company = _companyRepository.GetCompanyByEmployerId(employerId);
+            if (company == null)
+            {
+                return null;
+            }
+
             var job = new Job
             {
                 Title = request.Title,
                 Description = request.Description,
                 Location = request.Location,
                 Salary = request.Salary,
-                EmployerId = employerId
+                EmployerId = employerId,
+                CompanyId = company.Id
             };
 
             _jobRepository.AddJob(job);

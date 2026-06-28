@@ -109,5 +109,16 @@ namespace JobPortalAPI.Services
 
             return "Logo uploaded successfully";
         }
+
+        public List<CompanyJobDto> GetCompanyJobs(int employerId)
+        {
+            var company =
+                _companyRepository.GetCompanyByEmployerId(employerId);
+
+            if (company == null)
+                return new List<CompanyJobDto>();
+
+            return _companyRepository.GetCompanyJobs(company.Id);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using JobPortalAPI.Data;
+using JobPortalAPI.DTOs;
 using JobPortalAPI.Models;
 
 namespace JobPortalAPI.Repositories
@@ -31,6 +32,20 @@ namespace JobPortalAPI.Repositories
         public void UpdateCompany(Company company)
         {
             _context.Companies.Update(company);
+        }
+
+        public List<CompanyJobDto> GetCompanyJobs(int companyId)
+        {
+            return _context.Jobs
+                .Where(j => j.CompanyId == companyId)
+                .Select(j => new CompanyJobDto
+                {
+                    Id = j.Id,
+                    Title = j.Title,
+                    Location = j.Location,
+                    Salary = j.Salary
+                })
+                .ToList();
         }
     }
 }

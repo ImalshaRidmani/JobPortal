@@ -1,4 +1,5 @@
-﻿using JobPortalAPI.Models;
+﻿using JobPortalAPI.DTOs;
+using JobPortalAPI.Models;
 
 namespace JobPortalAPI.Repositories
 {
@@ -11,5 +12,7 @@ namespace JobPortalAPI.Repositories
         Task SaveChangesAsync();
 
         void UpdateCompany(Company company);
+
+        List<CompanyJobDto> GetCompanyJobs(int companyId);
     }
 }
